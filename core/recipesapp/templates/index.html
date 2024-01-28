@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>{{page}}</title>
+
+    <style>
+      .cards-list {
+        margin-top: 50px;
+        z-index: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .card {
+        margin: 30px auto;
+        width: 300px;
+        height: 300px;
+        border-radius: 40px;
+        box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25),
+          -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+        cursor: pointer;
+        transition: 0.4s;
+      }
+
+      .card .card_image {
+        width: inherit;
+        height: inherit;
+        border-radius: 40px;
+      }
+
+      .card .card_image img {
+        width: inherit;
+        height: inherit;
+        border-radius: 40px;
+        object-fit: cover;
+      }
+
+      .card .card_title {
+        text-align: center;
+        border-radius: 0px 0px 40px 40px;
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 30px;
+        margin-top: -80px;
+        height: 40px;
+      }
+
+      .card:hover {
+        transform: scale(0.9, 0.9);
+        box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25),
+          -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
+      }
+
+      .title-white {
+        color: white;
+      }
+
+      .title-black {
+        color: black;
+      }
+
+      @media all and (max-width: 500px) {
+        .card-list {
+          flex-direction: column;
+        }
+      }
+    </style>
+
+  </head>
+  <body>
+    <div style="display: flex; justify-content: center">
+      <nav
+        class="navbar navbar-expand-lg mt-2 shadow-lg"
+        style="
+          background-color: #fe2e2e;
+          width: 90%;
+          height: 70px;
+          border-radius: 30px;
+        ">
+        <div class="container-fluid" style="
+            background-color: #fe2e2e;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 20px;">
+
+          <a class="navbar-brand" href="#" style="color: aliceblue; font-weight: 700">
+            <img src="/media/recipes_images/LOGO.jpg" alt="" width="150px" height="45px"/>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-left: 20px;
+              gap: 20px;">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="#"
+                  style="color: aliceblue"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" style="color: aliceblue">Link</a>
+              </li>
+            </ul>
+            <!-- User login name -->
+            <li
+              class="nav-item"
+              style="
+                list-style: none;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+              ">
+
+              <i class="fa-solid fa-circle-user" style="font-size: 30px"></i>
+              {{request.user}} {{request.first_name}}
+            </li>
+            <a href="/logout_page" class="btn btn-outline-success " type="submit"> Logout</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="mt-5">
+      <div class="mx-auto col-9">
+        <form>
+          <div class="mb-3" style="display: flex; gap: 10px">
+            <label
+              for="exampleInputEmail1"
+              class="form-label"
+              style="font-weight: 500; font-size: 25px"
+              >Receipe:</label
+            >
+            <input
+              name="search"
+              type="text"
+              class="form-control"
+              style="border-radius: 10px; padding: 10px"
+            />
+            <button class="btn btn-primary" type="sumbit">Search</button>
+            <a
+              href="/recipe/"
+              class="btn btn-outline-success"
+              type="submit"
+              style="
+                width: 150px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+              >Add Recipe</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="history mb-5">
+      <div class="cards-list">
+        {% for recipe in recipes_list %}
+        <div class="card">
+          <div class="card_image">
+            <img src="/media/{{recipe.recipe_image}}" />
+          </div>
+          <div class="card_title title-white">
+            <p
+              style="
+                color: red;
+                background: rgba(0, 0, 0, 0.4);
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              ">
+
+              {{recipe.recipe_name}}
+
+            </p>
+            <a
+              href="/update_recipe/{{recipe.id}}"
+              class="btn btn-outline-success"
+              style="background-color: green; color: white"
+              type="submit"
+              >Update</a
+            >
+            <a
+              href="/delete_recipe/{{recipe.id}}"
+              class="btn btn-outline-danger"
+              style="background-color: red; color: white"
+              type="submit"
+              >Delete</a
+            >
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center;"><a href="/recipe/" class="btn btn-outline-success" type="submit"
+        style="
+          width: 300px;
+          height:80px;
+          display: flex;
+          font-size: 30px;
+          align-items: center;
+          margin-bottom: 50px;
+          justify-content: center;">Add Recipe</a>
+    </div>
+    
+  </body>
+</html>
