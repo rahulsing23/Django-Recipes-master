@@ -9,13 +9,14 @@ from django.contrib.auth.models import User
 
 @login_required(login_url="/login_page/")
 def home(request):
-    queryset = Recipes.objects.all()
+    queryset = Recipes.objects.filter(user=request.user)
 
     if request.GET.get('search'):
         queryset = queryset.filter(recipe_name__icontains = request.GET.get('search'))
 
     return render(request, 'index.html', context={'page':"home", "recipes_list": queryset})
 
+@login_required(login_url="/login_page/")
 def recipe(request):
     if request.method == "POST":
         data = request.POST
@@ -24,6 +25,7 @@ def recipe(request):
         recipe_image = request.FILES.get('recipe_image')
 
         Recipes.objects.create(
+        user = request.user,
         recipe_name = recipe_name,
         recipe_description = recipe_description,
         recipe_image = recipe_image
@@ -33,6 +35,7 @@ def recipe(request):
     
     return render(request, 'Recipes.html')
 
+@login_required(login_url="/login_page/")
 def update_recipe(request, id):
     queryset = Recipes.objects.get(id = id)
 
@@ -55,7 +58,7 @@ def update_recipe(request, id):
     return render(request, 'update_recipes.html', context)
 
 
-
+@login_required(login_url="/login_page/")
 def delete_recipe(request,id):
     queryset = Recipes.objects.get(id=id)
     queryset.delete()
